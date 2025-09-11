@@ -1,0 +1,9 @@
+newbase=# CREATE DATABASE auca;
+CREATE DATABASE
+newbase=# DROP DATABASE auca;
+DROP DATABASE
+newbase=# CREATE DATABASE auca;
+CREATE DATABASE
+newbase=# \c auca
+You are now connected to database "auca" as user "postgres".
+auca=#

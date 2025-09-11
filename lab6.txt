@@ -1,0 +1,35 @@
+newbase=# \c auca
+You are now connected to database "auca" as user "postgres".
+auca=# CREATE TABLE students (
+auca(#     student_id SERIAL PRIMARY KEY,
+auca(#     first_name VARCHAR(50) NOT NULL,
+auca(#     last_name VARCHAR(50) NOT NULL,
+auca(#     email VARCHAR(100) UNIQUE NOT NULL,
+auca(#     faculty VARCHAR(100)
+auca(# );
+CREATE TABLE
+auca=# DROP TABLE students
+auca-# ;
+DROP TABLE
+auca=# DROP TABLE IF EXISTS students;
+ЗАМЕЧАНИЕ:  таблица "students" не существует, пропускается
+DROP TABLE
+auca=# CREATE TABLE students (
+auca(#     student_id SERIAL PRIMARY KEY,
+auca(#     first_name VARCHAR(50) NOT NULL,
+auca(#     last_name VARCHAR(50) NOT NULL,
+auca(#     email VARCHAR(100) UNIQUE NOT NULL,
+auca(#     faculty VARCHAR(100)
+auca(# );
+CREATE TABLE                                              ^
+auca=# ALTER TABLE students ADD COLUMN date_of_birth DATE;
+ALTER TABLE
+auca=# ALTER TABLE students DROP COLUMN date_of_birth;
+ALTER TABLE
+auca=# ALTER TABLE students ALTER COLUMN first_name TYPE TEXT;
+ALTER TABLE
+auca=# ALTER TABLE students ADD CONSTRAINT unique_email UNIQUE (email);
+ALTER TABLE
+auca=# ALTER TABLE students RENAME COLUMN email TO email_address;
+ALTER TABLE
+auca=#
