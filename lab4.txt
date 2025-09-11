@@ -1,0 +1,69 @@
+C:\Users\Asus>psql -h localhost -p 5432 -U postgres
+Password for user postgres:
+psql (16.2)
+WARNING: Console code page (866) differs from Windows code page (1251)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# \c newbase
+You are now connected to database "newbase" as user "postgres".
+newbase=# \dt
+          List of relations
+ Schema |   Name   | Type  |  Owner
+--------+----------+-------+----------
+ public | bicycle  | table | postgres
+ public | car      | table | postgres
+ public | employee | table | postgres
+ public | students | table | postgres
+(4 rows)
+
+
+newbase=# SELECT name FROM students;
+  name
+---------
+ Amantai
+ test
+ Atai
+(3 rows)
+
+
+newbase=# SELECT * FROM students
+newbase-# ;
+ id |  name   | faculty  | age
+----+---------+----------+-----
+  1 | Amantai | SFW      |  20
+  2 | test    | SFW      | 100
+  3 | Atai    | Business |  50
+(3 rows)
+
+
+newbase=# SELECT name FROM students WHERE name = 'Amantai';
+  name
+---------
+ Amantai
+(1 row)
+
+
+newbase=# SELECT name, age FROM students WHERE name = 'Amantai';
+  name   | age
+---------+-----
+ Amantai |  20
+(1 row)
+
+
+newbase=# SELECT name, age FROM students ORDER BY age;
+  name   | age
+---------+-----
+ Amantai |  20
+ Atai    |  50
+ test    | 100
+(3 rows)
+
+
+newbase=# SELECT name, age FROM students LIMIT 2;
+  name   | age
+---------+-----
+ Amantai |  20
+ test    | 100
+(2 rows)
