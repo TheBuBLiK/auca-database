@@ -1,0 +1,66 @@
+C:\Users\Asus>psql -h localhost -p 5432 -U postgres
+Password for user postgres:
+psql (16.2)
+WARNING: Console code page (866) differs from Windows code page (1251)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# \l
+                                                                  List of databases
+      Name      |  Owner   | Encoding | Locale Provider |       Collate       |        Ctype        | ICU Locale | ICU Rules |   Access privileges
+----------------+----------+----------+-----------------+---------------------+---------------------+------------+-----------+-----------------------
+ cloud_provider | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           |
+ gamebase       | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           |
+ newbase        | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           |
+ postgres       | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           |
+ productdb      | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           |
+ template0      | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           | =c/postgres          +
+                |          |          |                 |                     |                     |            |           | postgres=CTc/postgres
+ template1      | postgres | UTF8     | libc            | Russian_Russia.1251 | Russian_Russia.1251 |            |           | =c/postgres          +
+                |          |          |                 |                     |                     |            |           | postgres=CTc/postgres
+(7 rows)
+
+
+postgres=# \c template1
+You are now connected to database "template1" as user "postgres".
+template1=# \dt
+Did not find any relations.
+template1=# \c newbase
+You are now connected to database "newbase" as user "postgres".
+newbase=# \ds
+               List of relations
+ Schema |      Name       |   Type   |  Owner
+--------+-----------------+----------+----------
+ public | bicycle_id_seq  | sequence | postgres
+ public | car_id_seq      | sequence | postgres
+ public | employee_id_seq | sequence | postgres
+(3 rows)
+
+newbase=# CREATE TABLE students (
+newbase(#     id SERIAL PRIMARY KEY,
+newbase(#     name VARCHAR(100),
+newbase(#     faculty VARCHAR(100),
+newbase(#     age INT
+newbase(# );
+CREATE TABLE
+                                                             ^
+newbase=# INSERT INTO students (name, faculty, age) VALUES ('Amantai', 'SFW', 20), ('test', 'SFW', 100);
+INSERT 0 2
+newbase=# SELECT * FROM students;
+ id |  name   | faculty | age
+----+---------+---------+-----
+  1 | Amantai | SFW     |  20
+  2 | test    | SFW     | 100
+(2 rows)
+
+
+newbase=# INSERT INTO students (name, faculty, age) VALUES ('Atai', 'Business', 50);
+INSERT 0 1
+newbase=# SELECT * FROM students;
+ id |  name   | faculty  | age
+----+---------+----------+-----
+  1 | Amantai | SFW      |  20
+  2 | test    | SFW      | 100
+  3 | Atai    | Business |  50
+(3 rows)
