@@ -1,0 +1,121 @@
+auca=# CREATE TABLE employees (
+auca(# id SERIAL PRIMARY KEY,
+auca(# name VARCHAR(100),
+auca(# department VARCHAR(100),
+auca(# salary NUMERIC(10,2)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE products (
+auca(# product_id SERIAL PRIMARY KEY,
+auca(# product_name VARCHAR(200),
+auca(# price NUMERIC(10,2)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE customers (
+auca(# customer_id SERIAL PRIMARY KEY,
+auca(# customer_name VARCHAR(150)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE users (
+auca(# user_id SERIAL PRIMARY KEY,
+auca(# email VARCHAR(255)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE sales (
+auca(# id SERIAL PRIMARY KEY,
+auca(# employee_id INT,
+auca(# amount NUMERIC(10,2)
+auca(# );
+CREATE TABLE
+auca=# \dt
+                 List of relations
+ Schema |   Name   | Type  |  Owner
+--------+----------+-------+--------
+ public | customers| table | auca
+ public | employees| table | auca
+ public | products | table | auca
+ public | sales    | table | auca
+ public | users    | table | auca
+(5 rows)
+
+auca=# \d employees
+                                     Table "public.employees"
+  Column   |         Type          | Collation | Nullable |                     Default
+-----------+-----------------------+-----------+----------+-------------------------------------------------
+ id        | integer               |           | not null | nextval('employees_id_seq'::regclass)
+ name      | character varying(100)|           |          |
+ department| character varying(100)|           |          |
+ salary    | numeric(10,2)         |           |          |
+Indexes:
+    "employees_pkey" PRIMARY KEY, btree (id)
+
+auca=# SELECT * FROM employees;
+auca=# SELECT name, department FROM employees;
+auca=# SELECT name, salary, salary * 0.10 AS potential_bonus
+auca-# FROM employees;
+
+auca=# SELECT name, salary
+auca-# FROM employees
+auca-# WHERE department = 'Sales';
+
+auca=# SELECT name
+auca-# FROM employees
+auca-# WHERE salary > 75000 AND department = 'Engineering';
+
+auca=# SELECT product_name, price
+auca-# FROM products
+auca-# WHERE price BETWEEN 20 AND 50;
+
+auca=# SELECT customer_name
+auca-# FROM customers
+auca-# WHERE customer_name LIKE 'Bra%';
+
+auca=# SELECT product_name
+auca-# FROM products
+auca-# WHERE product_name LIKE '%berry';
+
+auca=# SELECT email
+auca-# FROM users
+auca-# WHERE email ILIKE '%@gmail.com';
+
+auca=# SELECT name
+auca-# FROM employees
+auca-# WHERE name ~ '^[AB]';
+
+auca=# SELECT email
+auca-# FROM users
+auca-# WHERE email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$';
+
+auca=# SELECT name, department
+auca-# FROM employees
+auca-# WHERE department IN ('Sales','Finance','HR');
+
+auca=# SELECT name
+auca-# FROM employees
+auca-# WHERE id IN (SELECT employee_id FROM sales WHERE amount > 1000);
+
+auca=# SELECT name
+auca-# FROM employees e
+auca-# WHERE EXISTS (
+auca(#   SELECT 1
+auca(#   FROM sales s
+auca(#   WHERE s.employee_id = e.id AND s.amount > 1000
+auca(# );
+
+auca=# SELECT name, salary,
+auca-#   CASE
+auca-#     WHEN salary > 100000 THEN 'Senior'
+auca-#     WHEN salary BETWEEN 60000 AND 100000 THEN 'Mid-Level'
+auca-#     ELSE 'Junior'
+auca-#   END AS employee_level
+auca-# FROM employees;
+
+auca=# WITH department_averages AS (
+auca(#   SELECT department, AVG(salary) AS avg_salary
+auca(#   FROM employees
+auca(#   GROUP BY department
+auca(# )
+auca-# SELECT e.name, e.salary, e.department, da.avg_salary
+auca-# FROM employees e
+auca-# JOIN department_averages da ON e.department = da.department
+auca-# WHERE e.salary > da.avg_salary;
