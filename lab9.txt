@@ -1,0 +1,141 @@
+auca=# CREATE TABLE students_bad (
+auca(# student_id INT PRIMARY KEY,
+auca(# name VARCHAR(100),
+auca(# phone_numbers TEXT -- "123-456-7890, 098-765-4321"
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE students (
+auca(# student_id INT PRIMARY KEY,
+auca(# name VARCHAR(100)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE student_phones (
+auca(# student_id INT,
+auca(# phone_number VARCHAR(15),
+auca(# phone_type VARCHAR(20), -- 'mobile', 'home', etc.
+auca(# PRIMARY KEY (student_id, phone_number),
+auca(# FOREIGN KEY (student_id) REFERENCES students(student_id)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE enrollments_bad (
+auca(# student_id INT,
+auca(# course_id INT,
+auca(# course_name VARCHAR(100), -- Partial dependency!
+auca(# grade CHAR(2),
+auca(# PRIMARY KEY (student_id, course_id)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE courses (
+auca(# course_id INT PRIMARY KEY,
+auca(# course_name VARCHAR(100),
+auca(# credits INT
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE enrollments (
+auca(# student_id INT,
+auca(# course_id INT,
+auca(# grade CHAR(2),
+auca(# PRIMARY KEY (student_id, course_id),
+auca(# FOREIGN KEY (student_id) REFERENCES students(student_id),
+auca(# FOREIGN KEY (course_id) REFERENCES courses(course_id)
+auca(# );
+CREATE TABLE
+auca=# DROP TABLE students_bad;
+DROP TABLE
+auca=# CREATE TABLE students_bad (
+auca(# student_id INT PRIMARY KEY,
+auca(# name VARCHAR(100),
+auca(# department_id INT,
+auca(# department_name VARCHAR(100)
+auca(# );
+CREATE TABLE
+auca=# \dp
+                                  Access privileges
+ Schema |      Name       | Type  | Access privileges | Column privileges | Policies
+--------+-----------------+-------+-------------------+-------------------+----------
+ public | courses         | table |                   |                   |
+ public | enrollments     | table |                   |                   |
+ public | enrollments_bad | table |                   |                   |
+ public | student_phones  | table |                   |                   |
+ public | students        | table |                   |                   |
+ public | students_bad    | table |                   |                   |
+(6 rows)
+
+
+auca=# CREATE TABLE departments (
+auca(# department_id INT PRIMARY KEY,
+auca(# department_name VARCHAR(100),
+auca(# department_head VARCHAR(100)
+auca(# );
+CREATE TABLE
+auca=# DROP TABLE students;
+ОШИБКА:  удалить объект таблица students нельзя, так как от него зависят другие объекты
+DETAIL:  ограничение student_phones_student_id_fkey в отношении таблица student_phones зависит от объекта таблица students
+ограничение enrollments_student_id_fkey в отношении таблица enrollments зависит от объекта таблица students
+HINT:  Для удаления зависимых объектов используйте DROP ... CASCADE.
+auca=# DROP TABLE students CASCADE;
+ЗАМЕЧАНИЕ:  удаление распространяется на ещё 2 объекта
+DETAIL:  удаление распространяется на объект ограничение student_phones_student_id_fkey в отношении таблица student_phones
+удаление распространяется на объект ограничение enrollments_student_id_fkey в отношении таблица enrollments
+DROP TABLE
+auca=# CREATE TABLE students (
+auca(# student_id INT PRIMARY KEY,
+auca(# name VARCHAR(100),
+auca(# department_id INT,
+auca(# FOREIGN KEY (department_id) REFERENCES departments(department_id)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE authors (
+auca(# author_id SERIAL PRIMARY KEY,
+auca(# first_name VARCHAR(50) NOT NULL,
+auca(# last_name VARCHAR(50) NOT NULL,
+auca(# birth_date DATE
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE books (
+auca(# book_id SERIAL PRIMARY KEY,
+auca(# title VARCHAR(200) NOT NULL,
+auca(# isbn VARCHAR(13) UNIQUE,
+auca(# publication_year INTEGER,
+auca(# available_copies INTEGER DEFAULT 1
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE book_authors (
+auca(# book_id INTEGER,
+auca(# author_id INTEGER,
+auca(# PRIMARY KEY (book_id, author_id),
+auca(# FOREIGN KEY (book_id) REFERENCE books(book_id),
+auca(# FOREIGN KEY (author_id) REFERENCES authors(author_id)
+auca(# );
+ОШИБКА:  ошибка синтаксиса (примерное положение: "REFERENCE")
+LINE 5: FOREIGN KEY (book_id) REFERENCE books(book_id),
+                              ^
+auca=# CREATE TABLE book_authors (
+auca(# book_id INTEGER,
+auca(# author_id INTEGER,
+auca(# PRIMARY KEY (book_id, author_id),
+auca(# FOREIGN KEY (book_id) REFERENCES books(book_id),
+auca(# FOREIGN KEY (author_id) REFERENCES authors(author_id)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE members (
+auca(# member_id SERIAL PRIMARY KEY,
+auca(# first_name VARCHAR(50) NOT NULL,
+auca(# last_name VARCHAR(50) NOT NULL,
+auca(# email VARCHAR(100) UNIQUE NOT NULL,
+auca(# phone VARCHAR(15),
+auca(# membership_date DATE DEFAULT CURRENT_DATE
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE loans (
+auca(# loan_id SERIAL PRIMARY KEY,
+auca(# member_id INTEGER NOT NULL,
+auca(# book_id INTEGER NOT NULL,
+auca(# loan_date DATE DEFAULT CURRENT_DATE,
+auca(# due_date DATE NOT NULL,
+auca(# return_date DATE,
+auca(# late_free DECIMAL(10,2) DEFAULT 0.00,
+auca(# FOREIGN KEY (member_id) REFERENCES members(member_id),
+auca(# FOREIGN KEY (book_id) REFERENCES books(book_id)
+auca(# );
+CREATE TABLE
