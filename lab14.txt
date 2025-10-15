@@ -1,0 +1,87 @@
+C:\Users\Asus>psql -h localhost -p 5432 -U postgres
+Password for user postgres:
+psql (16.2)
+WARNING: Console code page (866) differs from Windows code page (1251)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+auca=# DROP TABLE IF EXISTS order_items, orders, products, customers CASCADE;
+DROP TABLE
+auca=# CREATE TABLE customers (customer_id SERIAL PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));
+CREATE TABLE
+auca=# CREATE TABLE products (product_id SERIAL PRIMARY KEY, product_name VARCHAR(100), price NUMERIC(10,2));
+CREATE TABLE
+auca=# CREATE TABLE orders (
+auca(# order_id SERIAL PRIMARY KEY,
+auca(# customer_id INTEGER REFERENCES customers(customer_id),
+auca(# order_date DATE,
+auca(# total_amount NUMERIC(10,2)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE order_items (
+auca(# item_id SERIAL PRIMARY KEY,
+auca(# order_id INTEGER REFERENCES orders(order_id),
+auca(# product_id INTEGER REFERENCES products(product_id),
+auca(# quantity INT
+auca(# );
+CREATE TABLE
+auca=# INSERT INTO customers(name,email) VALUES
+auca-# ('Azamat','azamat@example.com'),
+auca-# ('Bermet','bermet@example.com'),
+auca-# ('Chyngyz','chyngyz@example.com');
+INSERT 0 3
+auca=# INSERT INTO products(product_name,price) VALUES
+auca-# ('Notebook',1200.00),('Mouse',25.00),('Keyboard',70.00);
+INSERT 0 3
+auca=# INSERT INTO orders(customer_id,order_date,total_amount) VALUES
+auca-# (1,'2025-09-10',1295.00),(1,'2025-09-12',70.00),(2,'2025-09-13',25.00);
+INSERT 0 3
+auca=# INSERT INTO order_items(order_id,product_id,quantity) VALUES
+auca-# (1,1,1),(1,2,1),(2,3,1),(3,2,1);
+INSERT 0 4
+auca=# \dt
+           List of relations
+ Schema |    Name    | Type  | Owner
+--------+------------+-------+-------
+ public | customers  | table | auca
+ public | order_items| table | auca
+ public | orders     | table | auca
+ public | products   | table | auca
+(4 rows)
+
+auca=# SELECT c.name, c.email, o.order_date, o.total_amount
+auca-# FROM customers c
+auca-# INNER JOIN orders o ON c.customer_id = o.customer_id
+auca-# ORDER BY c.name, o.order_date;
+  name  |        email        | order_date | total_amount
+--------+----------------------+------------+--------------
+ Azamat | azamat@example.com  | 2025-09-10 |      1295.00
+ Azamat | azamat@example.com  | 2025-09-12 |        70.00
+ Bermet | bermet@example.com  | 2025-09-13 |        25.00
+(3 rows)
+
+auca=# SELECT c.name, o.order_date, p.product_name, oi.quantity
+auca-# FROM customers c
+auca-# JOIN orders o ON o.customer_id=c.customer_id
+auca-# JOIN order_items oi ON oi.order_id=o.order_id
+auca-# JOIN products p ON p.product_id=oi.product_id
+auca-# ORDER BY o.order_id, oi.item_id;
+  name  | order_date | product_name | quantity
+--------+------------+--------------+----------
+ Azamat | 2025-09-10 | Notebook     |        1
+ Azamat | 2025-09-10 | Mouse        |        1
+ Azamat | 2025-09-12 | Keyboard     |        1
+ Bermet | 2025-09-13 | Mouse        |        1
+(4 rows)
+
+auca=# SELECT c.name
+auca-# FROM customers c
+auca-# LEFT JOIN orders o ON o.customer_id=c.customer_id
+auca-# WHERE o.customer_id IS NULL;
+  name
+--------
+ Chyngyz
+(1 row)
+
+auca=# \q

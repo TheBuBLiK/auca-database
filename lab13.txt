@@ -1,0 +1,171 @@
+C:\Users\Asus>psql -h localhost -p 5432 -U postgres
+Password for user postgres:
+psql (16.2)
+WARNING: Console code page (866) differs from Windows code page (1251)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+auca=# DROP TABLE IF EXISTS employees, sales CASCADE;
+DROP TABLE
+auca=# CREATE TABLE employees (
+auca(# id SERIAL PRIMARY KEY,
+auca(# first_name VARCHAR(50),
+auca(# last_name  VARCHAR(50),
+auca(# salary NUMERIC(10,2),
+auca(# department VARCHAR(100),
+auca(# email VARCHAR(255),
+auca(# department_id INT
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE sales (
+auca(# id SERIAL PRIMARY KEY,
+auca(# employee_id INT,
+auca(# amount NUMERIC(10,2),
+auca(# sale_ts TIMESTAMP DEFAULT NOW()
+auca(# );
+CREATE TABLE
+auca=# INSERT INTO employees (first_name,last_name,salary,department,email,department_id) VALUES
+auca-# ('Alice','Nguyen',72000,'Engineering','alice.nguyen@gmail.com',3),
+auca-# ('Ben','Okafor',55000,'Sales','ben.okafor@yandex.ru',5),
+auca-# ('Carla','Romero',81000,'Finance','carla.romero@yahoo.com',5),
+auca-# ('Mina','Shah',90000,'Engineering','mina.shah@gmail.com',3),
+auca-# ('Diego','Lopez',60000,'Sales','diego.lopez@gmail.com',5);
+INSERT 0 5
+auca=# INSERT INTO sales (employee_id,amount) VALUES (1,1500.00),(2,900.00),(3,2200.00);
+INSERT 0 3
+auca=# \dt
+           List of relations
+ Schema |   Name    | Type  | Owner
+--------+-----------+-------+-------
+ public | employees | table | auca
+ public | sales     | table | auca
+(2 rows)
+
+auca=# \d employees
+                                     Table "public.employees"
+    Column     |          Type          | Collation | Nullable |                  Default
+---------------+------------------------+-----------+----------+-------------------------------------------
+ id            | integer                |           | not null | nextval('employees_id_seq'::regclass)
+ first_name    | character varying(50)  |           |          |
+ last_name     | character varying(50)  |           |          |
+ salary        | numeric(10,2)          |           |          |
+ department    | character varying(100) |           |          |
+ email         | character varying(255) |           |          |
+ department_id | integer                |           |          |
+Indexes:
+    "employees_pkey" PRIMARY KEY, btree (id)
+
+auca=# SELECT COUNT(*) AS total_employees FROM employees;
+ total_employees
+-----------------
+               5
+(1 row)
+
+auca=# SELECT COUNT(email) AS employees_with_email FROM employees;
+ employees_with_email
+----------------------
+                    5
+(1 row)
+
+auca=# SELECT COUNT(DISTINCT department) AS unique_departments FROM employees;
+ unique_departments
+--------------------
+                  3
+(1 row)
+
+auca=# SELECT * FROM sales;
+ id | employee_id | amount  |            sale_ts
+----+-------------+---------+-------------------------------
+  1 |           1 | 1500.00 | 20XX-09-18 01:18:59.227087+00
+  2 |           2 |  900.00 | 20XX-09-18 01:18:59.227087+00
+  3 |           3 | 2200.00 | 20XX-09-18 01:18:59.227087+00
+(3 rows)
+
+auca=# SELECT SUM(amount) AS revenue FROM sales;
+ revenue
+---------
+ 4600.00
+(1 row)
+
+auca=# SELECT department, SUM(salary) AS total_salary FROM employees GROUP BY department;
+ department  | total_salary
+-------------+--------------
+ Finance     |     81000.00
+ Engineering |    162000.00
+ Sales       |    115000.00
+(3 rows)
+
+auca=# ALTER TABLE employees ADD COLUMN age INT;
+ALTER TABLE
+auca=# UPDATE employees e SET age = v.age
+auca-# FROM (VALUES
+auca(#   ('Alice','Nguyen', 46),
+auca(#   ('Ben','Okafor', 23),
+auca(#   ('Carla','Romero', 52),
+auca(#   ('Mina','Shah',   49),
+auca(#   ('Diego','Lopez', 31)
+auca(# ) AS v(first_name,last_name,age)
+auca-# WHERE e.first_name=v.first_name AND e.last_name=v.last_name;
+UPDATE 5
+auca=# SELECT department, AVG(age) AS avg_age FROM employees GROUP BY department;
+ department  |       avg_age
+-------------+---------------------
+ Finance     | 52.0000000000000000
+ Engineering | 47.5000000000000000
+ Sales       | 27.0000000000000000
+(3 rows)
+
+auca=# SELECT MAX(salary) AS highest_salary, MIN(salary) AS lowest_salary FROM employees;
+ highest_salary | lowest_salary
+----------------+---------------
+       90000.00 |      55000.00
+(1 row)
+
+auca=# SELECT department, STRING_AGG(first_name, ', ') AS employee_names FROM employees GROUP BY department;
+ department  | employee_names
+-------------+----------------
+ Finance     | Carla
+ Engineering | Alice, Mina
+ Sales       | Ben, Diego
+(3 rows)
+
+auca=# SELECT department, ARRAY_AGG(salary) AS salary_array FROM employees GROUP BY department;
+ department  |    salary_array
+-------------+---------------------
+ Finance     | {81000.00}
+ Engineering | {72000.00,90000.00}
+ Sales       | {55000.00,60000.00}
+(3 rows)
+
+auca=# SELECT department, STDDEV(salary) AS salary_std_dev, VARIANCE(salary) AS salary_variance FROM employees GROUP BY department;
+ department  |  salary_std_dev   |    salary_variance
+-------------+-------------------+-----------------------
+ Finance     |                   |
+ Engineering |    12727.92206136 |    162000000.00000000
+ Sales       | 3535.533905932738 | 12500000.000000000000
+(3 rows)
+
+auca=# SELECT CORR(age, salary) AS age_salary_correlation FROM employees;
+    age_salary_correlation
+----------------------------
+     0.9183870478077324
+(1 row)
+
+auca=# SELECT
+auca-#   CASE WHEN age < 30 THEN 'Under 30'
+auca-#        WHEN age BETWEEN 30 AND 50 THEN '30-50'
+auca-#        ELSE 'Over 50' END AS age_group,
+auca-#   COUNT(*) AS employee_count,
+auca-#   AVG(salary) AS avg_salary
+auca-# FROM employees
+auca-# GROUP BY 1
+auca-# ORDER BY 1;
+ age_group | employee_count |     avg_salary
+-----------+----------------+--------------------
+ 30-50     |              3 | 74000.000000000000
+ Over 50   |              1 | 81000.000000000000
+ Under 30  |              1 | 55000.000000000000
+(3 rows)
+
+auca=# \q

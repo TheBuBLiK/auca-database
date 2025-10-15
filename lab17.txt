@@ -1,0 +1,41 @@
+auca=# DROP TABLE IF EXISTS demo_export;
+DROP TABLE
+auca=# CREATE TABLE demo_export(id INT, name TEXT, dept TEXT);
+CREATE TABLE
+auca=# INSERT INTO demo_export VALUES (1,'Altynai','IT'),(2,'Bektur','HR'),(3,'Cholpon','IT');
+INSERT 0 3
+auca=# \d demo_export
+                         Table "public.demo_export"
+ Column |  Type   | Collation | Nullable | Default
+--------+---------+-----------+----------+---------
+ id     | integer |           |          |
+ name   | text    |           |          |
+ dept   | text    |           |          |
+
+auca=# COPY (SELECT * FROM demo_export ORDER BY id) TO STDOUT WITH CSV HEADER;
+id,name,dept
+1,Altynai,IT
+2,Bektur,HR
+3,Cholpon,IT
+auca=# COPY (SELECT name,dept FROM demo_export WHERE dept='IT' ORDER BY name) TO STDOUT WITH CSV HEADER;
+name,dept
+Altynai,IT
+Cholpon,IT
+auca=# COPY demo_export FROM STDIN WITH CSV;
+Enter data to be copied followed by a newline.
+End with a backslash and a period on a line by itself, or an EOF signal.
+>> 4,Danara,Finance
+>> 5,Erlan,IT
+>> \.
+COPY 2
+auca=# SELECT * FROM demo_export ORDER BY id;
+ id |  name  |  dept
+----+--------+---------
+  1 | Altynai| IT
+  2 | Bektur | HR
+  3 | Cholpon| IT
+  4 | Danara | Finance
+  5 | Erlan  | IT
+(5 rows)
+
+auca=# \q

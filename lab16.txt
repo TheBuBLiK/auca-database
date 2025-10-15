@@ -1,0 +1,50 @@
+C:\Users\Asus>psql -h localhost -p 5432 -U postgres
+Password for user postgres:
+psql (16.2)
+WARNING: Console code page (866) differs from Windows code page (1251)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+auca=# DROP TABLE IF EXISTS accounts;
+DROP TABLE
+auca=# CREATE TABLE accounts(account_id INT PRIMARY KEY, owner TEXT, balance NUMERIC(12,2));
+CREATE TABLE
+auca=# INSERT INTO accounts VALUES (1,'A',1000.00),(2,'B',500.00);
+INSERT 0 2
+auca=# SELECT * FROM accounts ORDER BY account_id;
+ account_id | owner | balance
+------------+-------+---------
+          1 | A     | 1000.00
+          2 | B     |  500.00
+(2 rows)
+
+auca=# BEGIN;
+BEGIN
+auca=# UPDATE accounts SET balance=balance-100 WHERE account_id=1;
+UPDATE 1
+auca=# UPDATE accounts SET balance=balance+100 WHERE account_id=2;
+UPDATE 1
+auca=# COMMIT;
+COMMIT
+auca=# SELECT * FROM accounts ORDER BY account_id;
+ account_id | owner | balance
+------------+-------+---------
+          1 | A     |  900.00
+          2 | B     |  600.00
+(2 rows)
+
+auca=# BEGIN;
+BEGIN
+auca=# UPDATE accounts SET balance=balance-50 WHERE account_id=1;
+UPDATE 1
+auca=# ROLLBACK;
+ROLLBACK
+auca=# SELECT * FROM accounts ORDER BY account_id;
+ account_id | owner | balance
+------------+-------+---------
+          1 | A     |  900.00
+          2 | B     |  600.00
+(2 rows)
+
+auca=# \q
