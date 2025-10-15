@@ -1,0 +1,100 @@
+auca=# CREATE TABLE authors (
+auca(# author_id SERIAL PRIMARY KEY,
+auca(# first_name VARCHAR(50) NOT NULL,
+auca(# last_name VARCHAR(50) NOT NULL,
+auca(# birth_date DATE
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE books (
+auca(# book_id SERIAL PRIMARY KEY,
+auca(# title VARCHAR(200) NOT NULL,
+auca(# isbn VARCHAR(13) UNIQUE,
+auca(# publication_year INTEGER,
+auca(# available_copies INTEGER DEFAULT 1
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE book_authors (
+auca(# book_id INTEGER,
+auca(# author_id INTEGER,
+auca(# PRIMARY KEY (book_id, author_id),
+auca(# FOREIGN KEY (book_id) REFERENCES books(book_id),
+auca(# FOREIGN KEY (author_id) REFERENCES authors(author_id)
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE members (
+auca(# member_id SERIAL PRIMARY KEY,
+auca(# first_name VARCHAR(50) NOT NULL,
+auca(# last_name VARCHAR(50) NOT NULL,
+auca(# email VARCHAR(100) UNIQUE NOT NULL,
+auca(# phone VARCHAR(15),
+auca(# membership_date DATE DEFAULT CURRENT_DATE
+auca(# );
+CREATE TABLE
+auca=# CREATE TABLE loans (
+auca(# loan_id SERIAL PRIMARY KEY,
+auca(# member_id INTEGER NOT NULL,
+auca(# book_id INTEGER NOT NULL,
+auca(# load_date DATE DEFAULT CURRENT_DATE,
+auca(# due_date DATE NOT NULL,
+auca(# return_date DATE,
+auca(# late_fee DECIMAL(10,2) DEFAULT 0.00,
+auca(# FOREIGN KEY (member_id) REFERENCES members(member_id),
+auca(# FOREIGN KEY (book_id) REFERENCES books(book_id)
+auca(# );
+CREATE TABLE
+auca=# \dt
+                 List of relations
+ Schema |     Name     | Type  |  Owner
+--------+--------------+-------+--------
+ public | authors      | table | auca
+ public | book_authors | table | auca
+ public | books        | table | auca
+ public | loans        | table | auca
+ public | members      | table | auca
+(5 rows)
+
+auca=# \d authors
+                                     Table "public.authors"
+   Column   |         Type          | Collation | Nullable |                    Default
+------------+-----------------------+-----------+----------+----------------------------------------------
+ author_id  | integer               |           | not null | nextval('authors_author_id_seq'::regclass)
+ first_name | character varying(50) |           | not null |
+ last_name  | character varying(50) |           | not null |
+ birth_date | date                  |           |          |
+Indexes:
+    "authors_pkey" PRIMARY KEY, btree (author_id)
+Referenced by:
+    TABLE "book_authors" CONSTRAINT "book_authors_author_id_fkey" FOREIGN KEY (author_id) REFERENCES authors(author_id)
+
+auca=# \d books
+                                         Table "public.books"
+      Column      |          Type          | Collation | Nullable |                 Default
+------------------+------------------------+-----------+----------+-----------------------------------------
+ book_id          | integer                |           | not null | nextval('books_book_id_seq'::regclass)
+ title            | character varying(200) |           | not null |
+ isbn             | character varying(13)  |           |          |
+ publication_year | integer                |           |          |
+ available_copies | integer                |           |          | 1
+Indexes:
+    "books_pkey" PRIMARY KEY, btree (book_id)
+    "books_isbn_key" UNIQUE CONSTRAINT, btree (isbn)
+Referenced by:
+    TABLE "book_authors" CONSTRAINT "book_authors_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)
+    TABLE "loans" CONSTRAINT "loans_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)
+
+auca=# \d loans
+                                   Table "public.loans"
+   Column    |     Type      | Collation | Nullable |                Default
+-------------+---------------+-----------+----------+-----------------------------------------
+ loan_id     | integer       |           | not null | nextval('loans_loan_id_seq'::regclass)
+ member_id   | integer       |           | not null |
+ book_id     | integer       |           | not null |
+ load_date   | date          |           |          | CURRENT_DATE
+ due_date    | date          |           | not null |
+ return_date | date          |           |          |
+ late_fee    | numeric(10,2) |           |          | 0.00
+Indexes:
+    "loans_pkey" PRIMARY KEY, btree (loan_id)
+Foreign-key constraints:
+    "loans_book_id_fkey" FOREIGN KEY (book_id) REFERENCES books(book_id)
+    "loans_member_id_fkey" FOREIGN KEY (member_id) REFERENCES members(member_id)
