@@ -45,5 +45,5 @@ Created as part of the **Database Systems** course at the
 
 All rights reserved.
 This material is provided for educational and demonstration purposes only.
-Please contact the author for reuse permissions.
+If you want you can use this code for your own purposes
 
