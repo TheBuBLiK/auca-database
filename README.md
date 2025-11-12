@@ -5,6 +5,12 @@ Each lab demonstrates practical database management, query design, transactions,
 
 ---
 
+# Final Project
+
+## Topic: MMO RPG
+
+---
+
 ## Overview
 
 This repository tracks my full journey through a university database systems course — from basic table operations to ACID transactions and WAL backups.
@@ -16,21 +22,22 @@ Every file is a **live transcript**, not rewritten SQL. Commands, warnings, and 
 
 | File        | Focus Area                                        |
 | ----------- | ------------------------------------------------- |
-| `Lab03.txt` | Basic `psql` navigation and schema creation       |
-| `Lab04.txt` | Table creation, constraints, filtering & ordering |
-| `Lab05.txt` | Database creation/deletion workflow               |
-| `Lab06.txt` | Data types, constraint management, temp tables    |
-| `Lab07.txt` | Primary key variations and composite keys         |
-| `Lab08.txt` | Foreign keys, references, and join queries        |
-| `Lab09.txt` | Normalization principles (1NF–3NF)                |
-| `Lab10.txt` | Inspecting schemas and metadata                   |
-| `Lab11.txt` | DML: insert, update, delete, batch operations     |
-| `Lab12.txt` | Conditional queries, CASE, LIKE, CTEs             |
-| `Lab13.txt` | Aggregates and window functions                   |
-| `Lab14.txt` | All join types + self-joins and multi-table joins |
-| `Lab15.txt` | Advanced querying (CTE recursion, subqueries)     |
-| `Lab16.txt` | Transactions, isolation levels, savepoints        |
-| `Lab17.txt` | Data export/import, `pg_dump`, WAL archiving      |
+| `lab03.txt` | Basic `psql` navigation and schema creation       |
+| `lab04.txt` | Table creation, constraints, filtering & ordering |
+| `lab05.txt` | Database creation/deletion workflow               |
+| `lab06.txt` | Data types, constraint management, temp tables    |
+| `lab07.txt` | Primary key variations and composite keys         |
+| `lab08.txt` | Foreign keys, references, and join queries        |
+| `lab09.txt` | Normalization principles (1NF–3NF)                |
+| `lab10.txt` | Inspecting schemas and metadata                   |
+| `lab11.txt` | DML: insert, update, delete, batch operations     |
+| `lab12.txt` | Conditional queries, CASE, LIKE, CTEs             |
+| `lab13.txt` | Aggregates and window functions                   |
+| `lab14.txt` | All join types + self-joins and multi-table joins |
+| `lab15.txt` | Advanced querying (CTE recursion, subqueries)     |
+| `lab16.txt` | Transactions, isolation levels, savepoints        |
+| `lab17.txt` | Data export/import, `pg_dump`, WAL archiving      |
+| `final.txt` | Final project of the course                       |
 
 ---
 
