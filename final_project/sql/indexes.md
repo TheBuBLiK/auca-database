@@ -1,0 +1,17 @@
+CREATE INDEX idx_settlement_region ON settlement(region_id);
+CREATE INDEX idx_guild_town ON guild(town_id);
+CREATE INDEX idx_weapon_inventory ON weapon(inventory_id);
+CREATE INDEX idx_weapon_stats_weapon ON weapon_stats(weapon_id);
+CREATE INDEX idx_weapon_deco_weapon ON weapon_deco(weapon_id);
+CREATE INDEX idx_action_inventory ON action(inventory_id);
+CREATE INDEX idx_dungeon_region ON dungeon(region_id);
+CREATE INDEX idx_enemy_dungeon ON enemy(dungeon_id);
+CREATE INDEX idx_boss_dungeon ON boss(dungeon_id);
+CREATE INDEX idx_magic_spell_book ON magic_spell(spellbook_id);
+CREATE INDEX idx_player_guild ON player(guild_id);
+CREATE INDEX idx_player_home_town ON player(home_town_id);
+CREATE INDEX idx_player_quest_player ON player_quest_log(player_id);
+CREATE INDEX idx_player_quest_quest ON player_quest_log(quest_id);
+CREATE INDEX idx_guild_quest_guild ON guild_quest(guild_id);
+CREATE INDEX idx_guild_quest_quest ON guild_quest(quest_id);
+CREATE INDEX idx_mythical_creature_region ON mythical_creature(region_id);

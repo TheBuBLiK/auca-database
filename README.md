@@ -9,6 +9,16 @@ Each lab demonstrates practical database management, query design, transactions,
 
 ## Topic: MMO RPG
 
+A relational database for an MMO-style role-playing game world, implemented in PostgreSQL.  
+The final project includes:
+
+- Full database schema for regions, settlements, players, guilds, items, dungeons, enemies, quests, and more
+- Basic and advanced SQL queries
+- Transaction examples on realistic gameplay scenarios
+- Indexing strategy
+- Backup and recovery strategy using `pg_dump` and `pg_restore`
+- Full database ER-diagram
+
 ---
 
 ## Overview
@@ -37,7 +47,7 @@ Every file is a **live transcript**, not rewritten SQL. Commands, warnings, and 
 | `lab15.txt` | Advanced querying (CTE recursion, subqueries)     |
 | `lab16.txt` | Transactions, isolation levels, savepoints        |
 | `lab17.txt` | Data export/import, `pg_dump`, WAL archiving      |
-| `final.txt` | Final project of the course                       |
+| `final`     | Final project directory                           |
 
 ---
 
