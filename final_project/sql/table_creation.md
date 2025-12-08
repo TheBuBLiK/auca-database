@@ -34,7 +34,7 @@ CREATE TABLE inventory (
     id SERIAL PRIMARY KEY
 );
 
-CREATE TABLE action (
+CREATE TABLE potion (
     id SERIAL PRIMARY KEY,
     inventory_id INTEGER REFERENCES inventory(id) ON DELETE CASCADE,
     name VARCHAR(80) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE weapon_stats (
     weapon_id INTEGER UNIQUE REFERENCES weapon(id) ON DELETE CASCADE
 );
 
-CREATE TABLE weapon_deco (
+CREATE TABLE weapon_desc (
     id SERIAL PRIMARY KEY,
     weapon_id INTEGER UNIQUE REFERENCES weapon(id) ON DELETE CASCADE,
     lore VARCHAR(80),
