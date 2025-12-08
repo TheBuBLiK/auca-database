@@ -18,6 +18,8 @@ The final project includes:
 - Indexing strategy
 - Backup and recovery strategy using `pg_dump` and `pg_restore`
 - Full database ER-diagram
+- 
+<img width="1313" height="2641" alt="diagram" src="https://github.com/user-attachments/assets/84fcd039-d45e-4c56-948e-7523031fb51f" />
 
 ---
 
