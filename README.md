@@ -57,7 +57,8 @@ oracle-course-prove.jpg - a file proving a completion of the SQL Oracle course
 
 ### Presentation
 
-Link for a presentation of the final project
+Link for a presentation of the final project:
+
 https://www.canva.com/design/DAG7gDpHoGs/D78A0DD-wc_gmSH4VUrm2g/edit?utm_content=DAG7gDpHoGs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ---
