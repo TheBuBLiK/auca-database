@@ -18,7 +18,7 @@ The final project includes:
 - Indexing strategy
 - Backup and recovery strategy using `pg_dump` and `pg_restore`
 - Full database ER-diagram
-- 
+
 <img width="1313" height="2641" alt="diagram" src="https://github.com/user-attachments/assets/84fcd039-d45e-4c56-948e-7523031fb51f" />
 
 ---
@@ -50,6 +50,15 @@ Every file is a **live transcript**, not rewritten SQL. Commands, warnings, and 
 | `lab16.txt` | Transactions, isolation levels, savepoints        |
 | `lab17.txt` | Data export/import, `pg_dump`, WAL archiving      |
 | `final`     | Final project directory                           |
+
+oracle-course-prove.jpg - a file proving a completion of the SQL Oracle course
+
+---
+
+### Presentation
+
+Link for a presentation of the final project
+https://www.canva.com/design/DAG7gDpHoGs/D78A0DD-wc_gmSH4VUrm2g/edit?utm_content=DAG7gDpHoGs&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ---
 
